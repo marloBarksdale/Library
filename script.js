@@ -9,11 +9,11 @@ console.log("hello")
 function createCard(book){
 
 
-const body = document.body;
+const main= document.querySelector(".main");
 
 const card = document.createElement("div");
 card.classList.add("card");
-body.append(card);
+
 
 const cardContent = document.createElement("div");
 cardContent.className = "card-content";
@@ -39,6 +39,7 @@ button.textContent = "Learn More";
 cardContent.append(button);
 
 card.append(cardContent);
+main.append(card);
 }
 
 
@@ -88,7 +89,10 @@ let book1 = new Book("Harry Potter", 153);
 
 let book2 = new Book("Harry Potter 2", 192);
 
-let book3 = new Book("Harry Potter 2", 195);
+let book3 = new Book("Goldfinch", 195);
+let book4 = new Book("Goldfinch", 195);
+let book5 = new Book("Goldfinch", 195);
+let book6 = new Book("Goldfinch", 195);
 
 displayLibrary();
 
@@ -104,6 +108,13 @@ function displayLibrary() {
 createCard(book1);
 createCard(book2);
 createCard(book3);
+
+createCard(book4);
+createCard(book5);
+createCard(book6);
+createCard(book6);
+createCard(book6);
+createCard(book6);
 
 document.querySelector(".close").addEventListener('click', function(){
 
