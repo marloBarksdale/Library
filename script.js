@@ -104,3 +104,8 @@ function displayLibrary() {
 createCard(book1);
 createCard(book2);
 createCard(book3);
+
+document.querySelector(".close").addEventListener('click', function(){
+
+    document.querySelector(".modal").style.display = "none";
+});
