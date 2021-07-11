@@ -14,6 +14,13 @@ const main= document.querySelector(".main");
 const card = document.createElement("div");
 card.classList.add("card");
 
+const deleteButton = document.createElement("div");
+deleteButton.classList.add("close");
+deleteButton.textContent = "+";
+deleteButton.style.color = "hsl(142, 90%, 61%)";
+deleteButton.style.fontSize = "60px";
+
+card.append(deleteButton);
 
 const cardContent = document.createElement("div");
 cardContent.className = "card-content";
@@ -25,10 +32,15 @@ cardTitle.textContent = book.name;
 cardContent.append(cardTitle);
 
 const cardBody = document.createElement("p");
+const numbers = document.createElement("p");
 cardBody.className = "card-body";
+numbers.className = "card-body";
 
-cardBody.textContent = "  Lorem ipsum, dolor sit amet consectetur adipisicing elit. Autem, provident. Totam voluptatem";
+
+cardBody.textContent =   "Author:" + `${book.author}`;
+numbers.textContent = "Pages:" + `${book.pages}`  ;
 cardContent.append(cardBody);
+cardContent.append(numbers);
 
 
 
@@ -40,34 +52,59 @@ cardContent.append(button);
 
 card.append(cardContent);
 main.append(card);
+
+deleteButton.addEventListener("click", function(){
+    book.remove();
+    
+    main.removeChild(card);
+})
 }
 
 
 
+document.querySelector("#addBook").addEventListener("click", function(){
+
+
+    document.querySelector(".modal").style.display = "flex";
+    document.body.style.overflow = "hidden";
+    
+})
 
 
 
 
-function Book(name, pages, status) {
+
+function Book(name,author, pages) {
 
     this.name = name;
     this.pages = pages;
-    this.status = status;
+    // this.status = status;
+    this.author = author;
 
-    library.push(this);
+    
 
 
 }
 
+document.querySelector("#add").addEventListener("click", function(){
+
+    console.log("add");
+    
+    newBook();
+    document.querySelector(".modal").style.display = "none";
+
+});
 
 function newBook() {
 
-    let title = document.querySelector('input[name="title"]').value;
-    let pages = document.querySelector('input[name="pages"]').value;
-    let status = document.querySelector('input[name = "status"] ').value
+    let title = document.querySelector('input[id="title"]').value;
+    let pages = document.querySelector('input[id="pages"]').value;
+    // let status = document.querySelector('input[name = "status"] ').value
+    let author = document.querySelector('input[id="author"]').value;
 
-    library.push(new Book(title, pages, status));
-
+    library.push(new Book(title, author, pages));
+    
+    createCard(library[library.length-1]);
 
 }
 
@@ -81,18 +118,16 @@ function setStatus() {
 
 Book.prototype.getInfo = function () {
 
-    return [this.name, this.pages, this.status];
+    return [this.name, this.pages, this.author];
 }
 
 
-let book1 = new Book("Harry Potter", 153);
+Book.prototype.remove = function(){
+    library.splice(library.indexOf(this), 1);
 
-let book2 = new Book("Harry Potter 2", 192);
+}
 
-let book3 = new Book("Goldfinch", 195);
-let book4 = new Book("Goldfinch", 195);
-let book5 = new Book("Goldfinch", 195);
-let book6 = new Book("Goldfinch", 195);
+
 
 displayLibrary();
 
@@ -100,23 +135,15 @@ function displayLibrary() {
 
     library.forEach(e => {
 
-        console.log(e.getInfo().toString())
+        console.log(e.getInfo().toString());
 
     });
 }
 
-createCard(book1);
-createCard(book2);
-createCard(book3);
 
-createCard(book4);
-createCard(book5);
-createCard(book6);
-createCard(book6);
-createCard(book6);
-createCard(book6);
 
 document.querySelector(".close").addEventListener('click', function(){
 
     document.querySelector(".modal").style.display = "none";
+    document.body.style.overflow = "visible";
 });
