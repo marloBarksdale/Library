@@ -35,6 +35,7 @@ body {
     background-size:contain;
     padding: 10rem 0 0;
     max-width: 35ch;
+    position:relative;
     
     border-radius: .5rem;
     overflow: hidden;
@@ -213,3 +214,19 @@ input {
     .sidenav {padding-top: 15px;}
     .sidenav a {font-size: 18px;}
   }
+
+  .edit{
+    background-image: url(img/pen.png);
+    background-size: contain;
+    width: 4ch;
+    height: 4ch;
+    position: absolute;
+    top: 27px;
+    left: 14px;
+    background-color: currentcolor;
+    color: var(--clr-accent-400);
+
+  }
+
+
+ 
