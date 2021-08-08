@@ -1,4 +1,4 @@
-
+let x = v;
 
 
 let library = [];
@@ -10,6 +10,9 @@ const editor = document.createElement("a");
 editor.classList.add("button");
 editor.classList.add("editor");
 editor.textContent = "OK";
+
+
+
 
 function createCard(book) {
 
@@ -159,6 +162,7 @@ function replaceButton(){
 
 }
 
+
 function Book(name, author, pages) {
 
     this.name = name;
@@ -170,6 +174,8 @@ function Book(name, author, pages) {
 
 
 }
+
+
 
 document.querySelector("#add").addEventListener("click", function () {
 
