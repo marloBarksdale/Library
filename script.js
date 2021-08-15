@@ -1,11 +1,12 @@
-let x = 5;
 
 
 let library = [];
+let cardArray = [];
 
 console.log("hello")
 
 const addButton = document.querySelector("#add");
+
 const editor = document.createElement("a");
 editor.classList.add("button");
 editor.classList.add("editor");
@@ -14,132 +15,257 @@ editor.textContent = "OK";
 
 
 
-function createCard(book) {
+const Library = () => {
+
+
+    let bookID = 0;
+    const getName = () => playerName;
+    const getTeam = () => team;
+
+
+    const addCard = (card) => {
+
+        cardArray.push(card);
+        library.push(card.book);
+
+
+
+        displayLibrary();
+
+
+
+    }
+
+
+    const removeBook = (card)=>{
+
+        library.splice(library.indexOf(card.book), 1);
+        displayLibrary();
+    }
 
 
 
 
-    const main = document.querySelector(".main");
-
-    const card = document.createElement("div");
-    card.classList.add("card");
-
-    const deleteButton = document.createElement("div");
-    deleteButton.classList.add("close");
-    deleteButton.textContent = "+";
-    deleteButton.style.color = "hsl(142, 90%, 61%)";
-    deleteButton.style.fontSize = "60px";
-
-
-    const editButton = document.createElement("div");
-    editButton.classList.add("edit");
-
-    editButton.style.color = "hsl(142, 90%, 61%)";
-
-    card.append(editButton);
-
-
-    card.append(deleteButton);
-
-    const cardContent = document.createElement("div");
-    cardContent.className = "card-content";
-
-
-    const cardTitle = document.createElement("h2");
-    cardTitle.className = "card-title";
-    cardTitle.textContent = book.name;
-    cardContent.append(cardTitle);
-
-    const cardBody = document.createElement("p");
-    const numbers = document.createElement("p");
-    cardBody.className = "card-body";
-    numbers.className = "card-body";
-
-
-    cardBody.textContent = "Author:" + `${book.author}`;
-    numbers.textContent = "Pages:" + `${book.pages}`;
-    cardContent.append(cardBody);
-    cardContent.append(numbers);
-
-    
-
-
-    const button = document.createElement("a");
-    button.className = "button";
-    button.classList.add("statusButton");
-    button.textContent = "Unread";
-    button.style.backgroundColor = "red";
-    cardContent.append(button);
-
-    button.addEventListener("click", function(){
-            if(button.textContent === "Unread"){
-                button.textContent = "Read";
-                button.style.backgroundColor = "hsl(142, 90%, 61%)";
-                
-            }else if(button.textContent === "Read"){
-                button.textContent = "Unread";
-                button.style.backgroundColor = "red";
-               
-            }
-    })
-
-    card.append(cardContent);
-    main.append(card);
-
-    deleteButton.addEventListener("click", function () {
-        book.remove();
-
-        main.removeChild(card);
-    })
 
 
 
-    editButton.addEventListener("click", function () {
+    return { getName, getTeam, addCard ,removeBook};
+
+}
+
+const newLibrary = Library();
+
+const main = document.querySelector(".main");
+
+
+
+class Card {
+
+
+
+    constructor(title, author, pages) {
+        this.book = new Book(title, author, pages);
+        this.cardID = 0;
+        this.cardTitle = document.createElement("h2");
+        this.cardTitle.textContent = this.book.title;
+
+
+        this.cardAuthor = document.createElement("p");
+        this.cardAuthor.textContent = "Author:" + `${this.book.author}`;
+
+        this.card = document.createElement("div");
+
+        this.cardPages = document.createElement("p")
+        this.cardPages.textContent = "Pages:" + `${this.book.pages}`;
+
+        this.deleteButton = document.createElement("div");
+
+        this.editButton = document.createElement("div");
+        this.cardContent = document.createElement("div");
+        this.button = document.createElement("a");
+        this.editor = document.createElement("a");
+
+        this.buildCard();
+
+
+
+
+    }
+
+
+
+    setData() {
+
+
+
+        this.cardTitle = (document.createElement("h2").textContent = this.book.title);
+        this.cardAuthor = (document.createElement("p").textContent = "Author:" + `${this.book.author}`);
+        this.cardPages = document.createElement("p").textContent = "Pages:" + `${this.book.pages}`;
+
+    }
+
+
+
+
+
+
+    getBook() {
+        return this.book;
+    }
+
+
+    edit() {
+
+
 
         document.querySelector(".modal").style.display = "flex";
         document.body.style.overflow = "hidden";
 
-        document.querySelector('input[id="title"]').value = book.name;
-        document.querySelector('input[id="pages"]').value = book.pages;
-        // let status = document.querySelector('input[name = "status"] ').value
-        document.querySelector('input[id="author"]').value = book.author;
 
-      
+        document.querySelector('input[id="title"]').value = this.book.title;
+        document.querySelector('input[id="pages"]').value = this.book.pages;
 
-
-        
-
-        
-        document.querySelector("#add").replaceWith(editor);
-      
-       
-        editor.addEventListener("click", function () {
-            
-
-            library[library.indexOf(book)].name =document.querySelector('input[id="title"]').value;
-            book.pages =  document.querySelector('input[id="pages"]').value;
-            book.author =  document.querySelector('input[id="author"]').value; 
+        document.querySelector('input[id="author"]').value = this.book.author;
 
 
-            cardTitle.textContent = book.name;
-            cardBody.textContent = "Author:" + `${book.author}`;
-            numbers.textContent = "Pages:" + `${book.pages}`;
 
-            
+        let tempcard = this;
+
+
+        document.querySelector("#add").replaceWith(this.editor);
+
+
+        this.editor.addEventListener("click", function () {
+
+
+
+            tempcard.book.title = document.querySelector('input[id="title"]').value;
+            tempcard.book.pages = document.querySelector('input[id="pages"]').value;
+            tempcard.book.author = document.querySelector('input[id="author"]').value;
+
+
+            tempcard.cardTitle.textContent = tempcard.book.title;
+            tempcard.cardAuthor.textContent = "Author:" + `${tempcard.book.author}`;
+            tempcard.cardPages.textContent = "Pages:" + `${tempcard.book.pages}`;
+
+
             document.querySelector(".modal").style.display = "none";
-            document.body.style.overflow = "visible";
-            editor.replaceWith(addButton);
-
-            
-            
-        })
+            document.body.style.overflow = "auto";
+            tempcard.editor.replaceWith(addButton);
 
 
+            tempcard = null;
+
+        });
 
 
-    })
+
+
+    }
+
+
+
+
+    buildCard() {
+
+
+
+        this.card.classList.add("card");
+
+
+        this.deleteButton.classList.add("close");
+        this.deleteButton.textContent = "+";
+        this.deleteButton.style.color = "hsl(142, 90%, 61%)";
+        this.deleteButton.style.fontSize = "60px";
+
+
+
+        this.editButton.classList.add("edit");
+        this.editButton.style.color = "hsl(142, 90%, 61%)";
+
+        this.card.append(this.editButton);
+        this.card.append(this.deleteButton);
+
+
+        this.cardContent.className = "card-content";
+
+        this.cardTitle.className = "card-title";
+        this.cardContent.append(this.cardTitle);
+
+
+        this.cardAuthor.className = "card-body";
+        this.cardPages.className = "card-body";
+
+
+        this.cardContent.append(this.cardAuthor);
+        this.cardContent.append(this.cardPages);
+
+
+
+        this.button.className = "button";
+        this.button.classList.add("statusButton");
+        this.button.textContent = "Unread";
+        this.button.style.backgroundColor = "red";
+        this.cardContent.append(this.button);
+
+
+
+
+        this.editor.classList.add("button", "editor");
+        this.editor.textContent = "OK";
+
+
+
+        this.card.append(this.cardContent);
+
+        main.appendChild(this.card);
+
+
+        this.button.addEventListener("click", this.setStatus.bind(this));
+        this.deleteButton.addEventListener('click', this.deleteCard.bind(this));
+
+
+        newLibrary.addCard(this);
+
+        this.editButton.addEventListener("click", this.edit.bind(this));
+
+    }
+
+
+
+    deleteCard() {
+
+        newLibrary.removeBook(this);
+        main.removeChild(this.card);
+
+    }
+
+    setStatus() {
+
+
+
+        if (this.button.textContent === "Unread") {
+            this.button.textContent = "Read";
+            this.button.style.backgroundColor = "hsl(142, 90%, 61%)";
+
+        } else if (this.button.textContent === "Read") {
+            this.button.textContent = "Unread";
+            this.button.style.backgroundColor = "red";
+
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
 }
-
 
 
 
@@ -155,34 +281,67 @@ document.querySelector("#addBook").addEventListener("click", function () {
 
 
 
-function replaceButton(){
+function replaceButton() {
     console.log("replace");
 
-     editor.replaceWith(addButton);
+    editor.replaceWith(addButton);
 
 }
 
 
-function Book(name, author, pages) {
-
-    this.name = name;
-    this.pages = pages;
-    // this.status = status;
-    this.author = author;
 
 
+class Book {
 
+
+    constructor(title, author, pages) {
+        this.title = title;
+        this.author = author;
+        this.pages = pages;
+    }
+
+
+
+    getInfo() {
+        return [this.title, this.author, this.pages];
+    }
+
+
+    setTitle() {
+        this.title = document.querySelector('input[id="title"]').value;
+    }
+
+    setAuthor() {
+        this.author = document.querySelector('input[id="author"]').value;
+    }
+
+    setPages() {
+        this.pages = document.querySelector('input[id="pages"]').value;
+    }
+
+    remove() {
+        library.splice(library.indexOf(this), 1);
+
+    }
+
+
+
+    edit() {
+
+        this.title = document.querySelector('input[id="title"]').value;
+        this.pages = document.querySelector('input[id="pages"]').value;
+        this.author = document.querySelector('input[id="author"]').value;
+    }
 
 }
-
 
 
 document.querySelector("#add").addEventListener("click", function () {
 
     console.log("add");
-
     newBook();
     document.querySelector(".modal").style.display = "none";
+    document.body.style.overflow = "auto";
 
 });
 
@@ -194,36 +353,10 @@ function newBook() {
     let author = document.querySelector('input[id="author"]').value;
 
 
-    library.push(new Book(title, author, pages));
-
-    createCard(library[library.length - 1]);
-
-}
-
-
-
-function setStatus() {
-
-    return "Incomplete";
-
-}
-
-Book.prototype.edit = function () {
+    (new Card(title, author, pages));
 
 
 }
-
-Book.prototype.getInfo = function () {
-
-    return [this.name, this.pages, this.author];
-}
-
-
-Book.prototype.remove = function () {
-    library.splice(library.indexOf(this), 1);
-
-}
-
 
 
 displayLibrary();
@@ -241,10 +374,10 @@ function displayLibrary() {
 
 document.querySelector(".close").addEventListener('click', function () {
 
-    
+
     replaceButton();
     document.querySelector(".modal").style.display = "none";
-    document.body.style.overflow = "visible";
+    document.body.style.overflow = "auto";
 });
 
 
